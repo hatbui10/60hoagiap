@@ -3,164 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>60 Hoa Giáp - Ngũ Hành Sinh Khắc</title>
+    <title>PHONG THỦY TOÀN DIỆN V8 - LOGIC GIẢI THÍCH</title>
     <style>
         :root {
-            --bg: #0d1117;
-            --card-bg: #161b22;
-            --accent: #f0ad4e;
-            --text-main: #c9d1d9;
-            --text-dim: #8b949e;
+            --bg: #05070a;
+            --card: #0d1117;
+            --cyan: #00f2ff;
+            --pink: #ff007f;
+            --yellow: #f3ce32;
+            --red: #ff4d4d;
+            --green: #2ecc71;
+            --text: #c9d1d9;
             --border: #30363d;
-            --male: #58a6ff;
-            --female: #f85149;
-            --sinh: #238636;
-            --khac: #da3633;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding-bottom: 100px;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg); color: var(--text);
+            margin: 30px 3px 100px 3px; /* Layout 3 mép */
         }
 
-        header {
-            background: var(--card-bg);
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0; z-index: 100;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            padding: 15px;
-            max-width: 500px;
-            margin: 0 auto;
-        }
+        .container { max-width: 600px; margin: 0 auto; }
 
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
-            border: 1px solid var(--border);
-            position: relative;
+            background: var(--card); border-radius: 12px;
+            padding: 18px; border: 1px solid var(--border);
+            margin-bottom: 30px; box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .title { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--cyan); }
+        .nap-am { color: var(--cyan); font-weight: bold; font-size: 0.95rem; display: block; margin-top: 4px; }
+        
+        .cung-phi { font-size: 0.75rem; background: #161b22; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); text-align: right; }
 
-        .year-info { font-weight: bold; font-size: 1.2rem; }
-        .can-chi { color: var(--accent); }
-
-        .nap-am-box {
-            font-size: 0.9rem;
-            color: var(--text-main);
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.03);
-            padding: 8px;
-            border-radius: 6px;
-        }
-
-        .relationship {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 12px;
-            font-size: 0.8rem;
-        }
-
-        .rel-item {
-            padding: 5px 8px;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-        }
-        .rel-item.sinh { border: 1px solid var(--sinh); color: #4ade80; }
-        .rel-item.khac { border: 1px solid var(--khac); color: #f87171; }
-        .rel-label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
-
-        .cung-phi {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        .cung {
-            flex: 1;
-            font-size: 0.85rem;
-            padding: 6px;
-            text-align: center;
-            border-radius: 6px;
-            background: #21262d;
-        }
-        .cung.m { color: var(--male); border: 1px solid var(--male); }
-        .cung.f { color: var(--female); border: 1px solid var(--female); }
+        /* Logic Grid */
+        .logic-section { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
+        
+        .box { padding: 12px; border-radius: 8px; font-size: 0.85rem; background: rgba(255,255,255,0.02); border-left: 4px solid; line-height: 1.5; }
+        .b-good { border-color: var(--green); }
+        .b-warn { border-color: var(--yellow); }
+        .b-bad { border-color: var(--red); }
+        
+        .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.9; letter-spacing: 1px; }
+        .reason { font-size: 0.75rem; color: #8b949e; font-style: italic; margin-top: 4px; display: block; }
 
         textarea {
-            width: 100%;
-            height: 80px;
-            background: #0d1117;
-            color: #fff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            font-size: 16px;
-            outline: none;
+            width: 100%; height: 60px; background: #000; color: var(--cyan);
+            border: 1px solid var(--border); border-radius: 8px;
+            padding: 10px; font-size: 14px; outline: none; margin-top: 15px;
         }
 
-        .footer {
-            position: fixed;
-            bottom: 0; left: 0; right: 0;
-            padding: 15px;
-            background: rgba(13, 17, 23, 0.9);
-            backdrop-filter: blur(10px);
-            display: flex; justify-content: center;
-        }
-
-        .btn {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-weight: bold;
-            width: 100%; max-width: 300px;
+        .footer-btn {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--cyan); color: #000; border: none;
+            padding: 15px 40px; border-radius: 40px; font-weight: 900;
+            box-shadow: 0 0 30px var(--cyan); z-index: 1000;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 style="margin:0; font-size:1rem;">60 HOA GIÁP & SINH KHẮC (1960-2019)</h1>
-</header>
-
 <div class="container" id="app"></div>
-
-<div class="footer">
-    <button class="btn" onclick="exportTxt()">XUẤT FILE GHI CHÚ (.TXT)</button>
-</div>
 
 <script>
     const cans = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const chis = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
-    
-    const napAmData = {
-        "Canh Tý": "Bích Thượng Thổ", "Tân Sửu": "Bích Thượng Thổ", "Nhâm Dần": "Kim Bạch Kim", "Quý Mão": "Kim Bạch Kim",
-        "Giáp Thìn": "Phú Đăng Hỏa", "Ất Tỵ": "Phú Đăng Hỏa", "Bính Ngọ": "Thiên Hà Thủy", "Đinh Mùi": "Thiên Hà Thủy",
-        "Mậu Thân": "Đại Trạch Thổ", "Kỷ Dậu": "Đại Trạch Thổ", "Canh Tuất": "Thoa Xuyến Kim", "Tân Hợi": "Thoa Xuyến Kim",
-        "Nhâm Tý": "Tang Đố Mộc", "Quý Sửu": "Tang Đố Mộc", "Giáp Dần": "Đại Khê Thủy", "Ất Mão": "Đại Khê Thủy",
-        "Bính Thìn": "Sa Trung Thổ", "Đinh Tỵ": "Sa Trung Thổ", "Mậu Ngọ": "Thiên Thượng Hỏa", "Kỷ Mùi": "Thiên Thượng Hỏa",
-        "Canh Thân": "Thạch Lựu Mộc", "Tân Dậu": "Thạch Lựu Mộc", "Nhâm Tuất": "Đại Hải Thủy", "Quý Hợi": "Đại Hải Thủy",
+    const napAmFull = {
         "Giáp Tý": "Hải Trung Kim", "Ất Sửu": "Hải Trung Kim", "Bính Dần": "Lư Trung Hỏa", "Đinh Mão": "Lư Trung Hỏa",
         "Mậu Thìn": "Đại Lâm Mộc", "Kỷ Tỵ": "Đại Lâm Mộc", "Canh Ngọ": "Lộ Bàng Thổ", "Tân Mùi": "Lộ Bàng Thổ",
         "Nhâm Thân": "Kiếm Phong Kim", "Quý Dậu": "Kiếm Phong Kim", "Giáp Tuất": "Sơn Đầu Hỏa", "Ất Hợi": "Sơn Đầu Hỏa",
@@ -169,91 +80,88 @@
         "Giáp Thân": "Tuyền Trung Thủy", "Ất Dậu": "Tuyền Trung Thủy", "Bính Tuất": "Ốc Thượng Thổ", "Đinh Hợi": "Ốc Thượng Thổ",
         "Mậu Tý": "Thích Lịch Hỏa", "Kỷ Sửu": "Thích Lịch Hỏa", "Canh Dần": "Tùng Bách Mộc", "Tân Mão": "Tùng Bách Mộc",
         "Nhâm Thìn": "Trường Lưu Thủy", "Quý Tỵ": "Trường Lưu Thủy", "Giáp Ngọ": "Sa Trung Kim", "Ất Mùi": "Sa Trung Kim",
-        "Bính Thân": "Sơn Hạ Hỏa", "Đinh Dậu": "Sơn Hạ Hỏa", "Mậu Tuất": "Bình Địa Mộc", "Kỷ Hợi": "Bình Địa Mộc"
+        "Bính Thân": "Sơn Hạ Hỏa", "Đinh Dậu": "Sơn Hạ Hỏa", "Mậu Tuất": "Bình Địa Mộc", "Kỷ Hợi": "Bình Địa Mộc",
+        "Canh Tý": "Bích Thượng Thổ", "Tân Sửu": "Bích Thượng Thổ", "Nhâm Dần": "Kim Bạch Kim", "Quý Mão": "Kim Bạch Kim",
+        "Giáp Thìn": "Phú Đăng Hỏa", "Ất Tỵ": "Phú Đăng Hỏa", "Bính Ngọ": "Thiên Hà Thủy", "Đinh Mùi": "Thiên Hà Thủy",
+        "Mậu Thân": "Đại Trạch Thổ", "Kỷ Dậu": "Đại Trạch Thổ", "Canh Tuất": "Thoa Xuyến Kim", "Tân Hợi": "Thoa Xuyến Kim",
+        "Nhâm Tý": "Tang Đố Mộc", "Quý Sửu": "Tang Đố Mộc", "Giáp Dần": "Đại Khê Thủy", "Ất Mão": "Đại Khê Thủy",
+        "Bính Thìn": "Sa Trung Thổ", "Đinh Tỵ": "Sa Trung Thổ", "Mậu Ngọ": "Thiên Thượng Hỏa", "Kỷ Mùi": "Thiên Thượng Hỏa",
+        "Canh Thân": "Thạch Lựu Mộc", "Tân Dậu": "Thạch Lựu Mộc", "Nhâm Tuất": "Đại Hải Thủy", "Quý Hợi": "Đại Hải Thủy"
     };
 
-    const sinhKhacMap = {
-        "Kim": { sinh: "Thủy", duoc: "Thổ", khac: "Mộc", bi: "Hỏa" },
-        "Mộc": { sinh: "Hỏa", duoc: "Thủy", khac: "Thổ", bi: "Kim" },
-        "Thủy": { sinh: "Mộc", duoc: "Kim", khac: "Hỏa", bi: "Thổ" },
-        "Hỏa": { sinh: "Thổ", duoc: "Mộc", khac: "Kim", bi: "Thủy" },
-        "Thổ": { sinh: "Kim", duoc: "Hỏa", khac: "Thủy", bi: "Mộc" }
-    };
+    const cungPhiData = [
+        ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"]
+    ]; // Lặp lại cho 60 năm...
 
-    const cungPhi = [
-        ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], 
-        ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], ["Chấn", "Chấn"], 
-        ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], 
-        ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], 
-        ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], 
-        ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"]
-    ];
-
-    const app = document.getElementById('app');
-
-    for (let i = 0; i < 60; i++) {
-        let y = 1960 + i;
-        let cIdx = (y - 4) % 10;
-        let chiIdx = (y - 4) % 12;
-        let name = cans[cIdx] + " " + chis[chiIdx];
-        let napAm = napAmData[name];
-        let hanh = napAm.split(' ').pop();
-        let sk = sinhKhacMap[hanh];
-        let [m, f] = cungPhi[i];
-        let saved = localStorage.getItem(`hg_v3_${y}`) || "";
-
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <div class="card-header">
-                <span class="year-info">${y} - <span class="can-chi">${name}</span></span>
-                <span style="font-size:0.7rem; color:var(--text-dim)">#${i+1}</span>
-            </div>
-            <div class="nap-am-box"><b>Nạp âm:</b> ${napAm}</div>
-            <div class="relationship">
-                <div class="rel-item sinh">
-                    <span class="rel-label">Tương sinh</span>
-                    Hợp: ${sk.duoc}, ${sk.sinh}
-                </div>
-                <div class="rel-item khac">
-                    <span class="rel-label">Tương khắc</span>
-                    Kỵ: ${sk.bi}, ${sk.khac}
-                </div>
-            </div>
-            <div class="cung-phi">
-                <div class="cung m">Nam: ${m}</div>
-                <div class="cung f">Nữ: ${f}</div>
-            </div>
-            <textarea placeholder="Ghi chú thêm..." oninput="localStorage.setItem('hg_v3_${y}', this.value)">${saved}</textarea>
-        `;
-        app.appendChild(card);
+    function getLogic(can, chi) {
+        const canHop = { "Giáp": "Kỷ", "Ất": "Canh", "Bính": "Tân", "Đinh": "Nhâm", "Mậu": "Quý", "Kỷ": "Giáp", "Canh": "Ất", "Tân": "Bính", "Nhâm": "Đinh", "Quý": "Mậu" };
+        const canXung = { "Giáp": "Canh", "Ất": "Tân", "Bính": "Nhâm", "Đinh": "Quý", "Mậu": "Giáp", "Kỷ": "Ất", "Canh": "Giáp", "Tân": "Ất", "Nhâm": "Bính", "Quý": "Đinh" };
+        const chiTamHop = { "Tý": "Thân, Thìn", "Sửu": "Tỵ, Dậu", "Dần": "Ngọ, Tuất", "Mão": "Hợi, Mùi", "Thìn": "Thân, Tý", "Tỵ": "Sửu, Dậu", "Ngọ": "Dần, Tuất", "Mùi": "Mão, Hợi", "Thân": "Tý, Thìn", "Dậu": "Sửu, Tỵ", "Tuất": "Dần, Ngọ", "Hợi": "Mão, Mùi" };
+        const chiLucHop = { "Tý": "Sửu", "Sửu": "Tý", "Dần": "Hợi", "Mão": "Tuất", "Thìn": "Dậu", "Tỵ": "Thân", "Ngọ": "Mùi", "Mùi": "Ngọ", "Thân": "Tỵ", "Dậu": "Thìn", "Tuất": "Mão", "Hợi": "Dần" };
+        const chiXung = { "Tý": "Ngọ", "Sửu": "Mùi", "Dần": "Thân", "Mão": "Dậu", "Thìn": "Tuất", "Tỵ": "Hợi", "Ngọ": "Tý", "Mùi": "Sửu", "Thân": "Dần", "Dậu": "Mão", "Tuất": "Thìn", "Hợi": "Tỵ" };
+        
+        return {
+            hopTaiChinh: canHop[can],
+            hopLamAn: chiTamHop[chi],
+            hopHonNhan: chiLucHop[chi],
+            khacKhau: canXung[can],
+            daiKy: chiXung[chi]
+        };
     }
 
-    function exportTxt() {
-        let text = "SỔ TAY PHONG THỦY 1960-2019 (SINH KHẮC HÀNH)\\n\\n";
-        for (let i = 0; i < 60; i++) {
-            let y = 1960 + i;
-            let cIdx = (y - 4) % 10;
-            let chiIdx = (y - 4) % 12;
-            let name = cans[cIdx] + " " + chis[chiIdx];
-            let napAm = napAmData[name];
-            let hanh = napAm.split(' ').pop();
-            let sk = sinhKhacMap[hanh];
-            let [m, f] = cungPhi[i];
-            let note = localStorage.getItem(`hg_v3_${y}`) || "";
-            
-            text += `Năm ${y} - ${name} (${napAm})\\n`;
-            text += `- Tương sinh: ${sk.duoc} sinh ${hanh}, ${hanh} sinh ${sk.sinh}\\n`;
-            text += `- Tương khắc: ${sk.bi} khắc ${hanh}, ${hanh} khắc ${sk.khac}\\n`;
-            text += `- Cung Phi: Nam ${m}, Nữ ${f}\\n`;
-            if(note) text += `- Ghi chú: ${note}\\n`;
-            text += `------------------------------------\\n`;
-        }
-        const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "phong-thuy-sinh-khac-1960.txt";
-        a.click();
+    const app = document.getElementById('app');
+    for (let i = 0; i < 60; i++) {
+        let y = 1960 + i;
+        let c = cans[i % 10];
+        let h = chis[i % 12];
+        let name = c + " " + h;
+        let nAm = napAmFull[name] || "Đang cập nhật";
+        let cp = cungPhiData[i % 10];
+        let lg = getLogic(c, h);
+
+        app.innerHTML += `
+            <div class="card">
+                <div class="header">
+                    <div>
+                        <span class="title">${y} - ${name}</span>
+                        <span class="nap-am">${nAm}</span>
+                    </div>
+                    <div class="cung-phi">
+                        <span style="color:var(--cyan)">Nam: ${cp[0]}</span><br>
+                        <span style="color:var(--pink)">Nữ: ${cp[1]}</span>
+                    </div>
+                </div>
+
+                <div class="logic-section">
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--green)">💰 Hợp Tài Chính: Tuổi có Can ${lg.hopTaiChinh}</span>
+                        <span class="reason">Giải thích: Thiên Can là vận may, lộc trời. Can hợp giúp hanh thông về giấy tờ, ký kết, dòng tiền.</span>
+                    </div>
+
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--cyan)">💼 Hợp Làm Ăn: Tuổi ${lg.hopLamAn}</span>
+                        <span class="reason">Giải thích: Tam hợp chủ về sự tương đồng trong hành động và phương pháp xử lý công việc.</span>
+                    </div>
+
+                    <div class="box b-good">
+                        <span class="label" style="color:var(--pink)">❤️ Hợp Hôn Nhân: Tuổi ${lg.hopHonNhan}</span>
+                        <span class="reason">Giải thích: Lục hợp là sự thấu hiểu nội tâm, giúp gia đạo yên ấm, ít sóng gió ngầm.</span>
+                    </div>
+
+                    <div class="box b-warn">
+                        <span class="label" style="color:var(--yellow)">⚠️ Khắc khẩu: Can ${lg.khacKhau}</span>
+                        <span class="reason">Tại sao: Thiên can đối xung khiến quan điểm trái ngược, nói chuyện dễ gây ức chế dù không ác ý.</span>
+                    </div>
+
+                    <div class="box b-bad">
+                        <span class="label" style="color:var(--red)">💀 Đại kỵ: Tuổi ${lg.daiKy}</span>
+                        <span class="reason">Tại sao: Lục xung là thế đối đầu trực diện, dễ dẫn đến đổ vỡ trắng tay nếu chung vốn.</span>
+                    </div>
+                </div>
+
+                <textarea placeholder="Ghi chú đối tác, người thân..."></textarea>
+            </div>
+        `;
     }
 </script>
 </body>
