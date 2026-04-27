@@ -22,7 +22,7 @@
         body {
             font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg); color: var(--text);
-            margin: 30px 3px 100px 3px; /* Layout 3 mép */
+            margin: 30px 3px 100px 3px; /* Layout chuẩn 3 mép */
         }
 
         .container { max-width: 600px; margin: 0 auto; }
@@ -37,30 +37,35 @@
         .title { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--cyan); }
         .nap-am { color: var(--cyan); font-weight: bold; font-size: 0.95rem; display: block; margin-top: 4px; }
         
-        .cung-phi { font-size: 0.75rem; background: #161b22; padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); text-align: right; }
+        /* Tab giới tính */
+        .gender-select { display: flex; gap: 8px; margin: 10px 0; }
+        .gender-btn { 
+            flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); 
+            background: #161b22; color: var(--text); font-size: 0.8rem; font-weight: bold; cursor: pointer;
+        }
+        .gender-btn.active-nam { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2); }
+        .gender-btn.active-nu { border-color: var(--pink); color: var(--pink); box-shadow: 0 0 10px rgba(255, 0, 127, 0.2); }
 
-        /* Logic Grid */
         .logic-section { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
         
         .box { padding: 12px; border-radius: 8px; font-size: 0.85rem; background: rgba(255,255,255,0.02); border-left: 4px solid; line-height: 1.5; }
         .b-good { border-color: var(--green); }
         .b-warn { border-color: var(--yellow); }
         .b-bad { border-color: var(--red); }
+        .b-info { border-color: var(--cyan); background: rgba(0, 242, 255, 0.03); }
         
         .label { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 6px; opacity: 0.9; letter-spacing: 1px; }
         .reason { font-size: 0.75rem; color: #8b949e; font-style: italic; margin-top: 4px; display: block; }
+
+        .cung-item { font-size: 0.75rem; border-bottom: 1px solid #222; padding: 6px 0; }
+        .cung-name { font-weight: bold; }
+        .txt-green { color: var(--green); }
+        .txt-red { color: var(--red); }
 
         textarea {
             width: 100%; height: 60px; background: #000; color: var(--cyan);
             border: 1px solid var(--border); border-radius: 8px;
             padding: 10px; font-size: 14px; outline: none; margin-top: 15px;
-        }
-
-        .footer-btn {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--cyan); color: #000; border: none;
-            padding: 15px 40px; border-radius: 40px; font-weight: 900;
-            box-shadow: 0 0 30px var(--cyan); z-index: 1000;
         }
     </style>
 </head>
@@ -91,7 +96,18 @@
 
     const cungPhiData = [
         ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"]
-    ]; // Lặp lại cho 60 năm...
+    ];
+
+    const batTrach = {
+        "Tốn": { "Khảm": ["Sinh Khí", "Tài lộc cực thịnh, con cái thành đạt."], "Chấn": ["Diên Niên", "Gia đạo êm ấm, tình cảm bền vững."], "Ly": ["Thiên Y", "Sức khỏe dồi dào, quý nhân hỗ trợ."], "Tốn": ["Phục Vị", "May mắn, tinh thần bình an."], "Càn": ["Họa Hại", "Thị phi, mất tiền oan vặt."], "Khôn": ["Ngũ Quỷ", "Dễ mất trộm, hỏa hoạn, tai tiếng."], "Đoài": ["Lục Sát", "Kiện tụng, tình cảm nứt vỡ."], "Cấn": ["Tuyệt Mệnh", "Phá sản, bệnh nan y (Đại kỵ)."] },
+        "Khôn": { "Cấn": ["Sinh Khí", "Phát triển sự nghiệp, con cái giỏi."], "Càn": ["Diên Niên", "Vợ chồng thấu hiểu, sống thọ."], "Đoài": ["Thiên Y", "Gặp thầy gặp thuốc, ít ốm đau."], "Khôn": ["Phục Vị", "Gia đình yên ổn, ít biến động."], "Khảm": ["Tuyệt Mệnh", "Phá sản, hại sức khỏe nghiêm trọng."], "Tốn": ["Ngũ Quỷ", "Bị tiểu nhân chọc phá, mất việc."], "Chấn": ["Họa Hại", "Nói năng gây hiểu lầm, xui xẻo."], "Ly": ["Lục Sát", "Mất ngủ, tâm lý bất an, cãi vã."] },
+        "Chấn": { "Ly": ["Sinh Khí", "Làm ăn phát đạt, danh tiếng lẫy lừng."], "Tốn": ["Diên Niên", "Quan hệ bạn bè và gia đình rất tốt."], "Khảm": ["Thiên Y", "Trời phú sức khỏe, tai qua nạn khỏi."], "Chấn": ["Phục Vị", "Tự tin, tinh thần vững vàng."], "Đoài": ["Tuyệt Mệnh", "Tai nạn bất ngờ, làm ăn sụp đổ."], "Cấn": ["Lục Sát", "Mang tiếng thị phi, gia đạo xáo trộn."], "Khôn": ["Họa Hại", "Khó tích lũy tiền bạc, mệt mỏi."], "Càn": ["Ngũ Quỷ", "Kiện tụng kéo dài, hỏa hoạn."] },
+        "Khảm": { "Tốn": ["Sinh Khí", "Giàu sang phú quý, vạn sự như ý."], "Ly": ["Diên Niên", "Tình yêu viên mãn, hạnh phúc bền lâu."], "Chấn": ["Thiên Y", "Gia đình không bệnh tật, có lộc ăn."], "Khảm": ["Phục Vị", "Củng cố sức mạnh tinh thần."], "Khôn": ["Tuyệt Mệnh", "Bệnh tật liên miên, tài sản tiêu tán."], "Cấn": ["Ngũ Quỷ", "Thị phi, mất tiền vì người ngoài."], "Càn": ["Lục Sát", "Vợ chồng hay nghi kỵ, tranh chấp."], "Đoài": ["Họa Hại", "Nội bộ bất hòa, khó làm việc lớn."] },
+        "Ly": { "Chấn": ["Sinh Khí", "Thăng quan tiến chức, phúc lộc đầy nhà."], "Khảm": ["Diên Niên", "Quan hệ xã giao tốt, tình duyên đẹp."], "Tốn": ["Thiên Y", "Bệnh nặng hóa nhẹ, sống lâu."], "Ly": ["Phục Vị", "Ổn định sự nghiệp, may mắn nhỏ."], "Càn": ["Tuyệt Mệnh", "Tổn thọ, trắng tay nhanh chóng."], "Đoài": ["Ngũ Quỷ", "Gặp họa từ trên trời rơi xuống."], "Khôn": ["Lục Sát", "Kiện cáo, tốn kém tiền bạc."], "Cấn": ["Họa Hại", "Làm nhiều hưởng ít, thị phi."] },
+        "Cấn": { "Khôn": ["Sinh Khí", "Điền sản dồi dào (đất đai), thành đạt."], "Đoài": ["Diên Niên", "Con cái hiếu thảo, gia đình vui vẻ."], "Càn": ["Thiên Y", "Có quý nhân dẫn đường chỉ lối."], "Cấn": ["Phục Vị", "Bình yên vô sự, vạn sự thuận lợi."], "Khảm": ["Ngũ Quỷ", "Tốn tiền vì kiện tụng, tiểu nhân hại."], "Chấn": ["Lục Sát", "Sát thương tình cảm, hay cãi vã."], "Tốn": ["Tuyệt Mệnh", "Con cái khó nuôi, phá sản."], "Ly": ["Họa Hại", "Mất việc, hay gặp xui xẻo nhỏ."] },
+        "Càn": { "Đoài": ["Sinh Khí", "Mọi việc hanh thông, lộc lá nhiều."], "Khôn": ["Diên Niên", "Hòa thuận trong ngoài, phúc đức."], "Cấn": ["Thiên Y", "Sức khỏe dồi dào, gặp may mắn."], "Càn": ["Phục Vị", "Sự nghiệp ổn định, được trợ giúp."], "Ly": ["Tuyệt Mệnh", "Hại người hại của, tan vỡ gia đình."], "Chấn": ["Ngũ Quỷ", "Bất hạnh, mất trộm, tai họa."], "Khảm": ["Lục Sát", "Mang tiếng xấu, hay bị vu oan."], "Tốn": ["Họa Hại", "Thất bại trong công việc, mệt mỏi."] },
+        "Đoài": { "Càn": ["Sinh Khí", "Tài lộc dồi dào, kinh doanh thuận lợi."], "Cấn": ["Diên Niên", "Gia đạo yên vui, bạn bè giúp đỡ."], "Khôn": ["Thiên Y", "Thân thể khỏe mạnh, ít ốm đau."], "Đoài": ["Phục Vị", "Củng cố ý chí, may mắn vây quanh."], "Chấn": ["Tuyệt Mệnh", "Tốn hao tài sản, tai nạn đau thương."], "Ly": ["Ngũ Quỷ", "Dễ bị lừa gạt, mất tiền của."], "Tốn": ["Lục Sát", "Quan hệ bất chính, thị phi lôi kéo."], "Khảm": ["Họa Hại", "Tâm trí rối loạn, khó thành công."] }
+    };
 
     function getLogic(can, chi) {
         const canHop = { "Giáp": "Kỷ", "Ất": "Canh", "Bính": "Tân", "Đinh": "Nhâm", "Mậu": "Quý", "Kỷ": "Giáp", "Canh": "Ất", "Tân": "Bính", "Nhâm": "Đinh", "Quý": "Mậu" };
@@ -99,70 +115,83 @@
         const chiTamHop = { "Tý": "Thân, Thìn", "Sửu": "Tỵ, Dậu", "Dần": "Ngọ, Tuất", "Mão": "Hợi, Mùi", "Thìn": "Thân, Tý", "Tỵ": "Sửu, Dậu", "Ngọ": "Dần, Tuất", "Mùi": "Mão, Hợi", "Thân": "Tý, Thìn", "Dậu": "Sửu, Tỵ", "Tuất": "Dần, Ngọ", "Hợi": "Mão, Mùi" };
         const chiLucHop = { "Tý": "Sửu", "Sửu": "Tý", "Dần": "Hợi", "Mão": "Tuất", "Thìn": "Dậu", "Tỵ": "Thân", "Ngọ": "Mùi", "Mùi": "Ngọ", "Thân": "Tỵ", "Dậu": "Thìn", "Tuất": "Mão", "Hợi": "Dần" };
         const chiXung = { "Tý": "Ngọ", "Sửu": "Mùi", "Dần": "Thân", "Mão": "Dậu", "Thìn": "Tuất", "Tỵ": "Hợi", "Ngọ": "Tý", "Mùi": "Sửu", "Thân": "Dần", "Dậu": "Mão", "Tuất": "Thìn", "Hợi": "Tỵ" };
-        
-        return {
-            hopTaiChinh: canHop[can],
-            hopLamAn: chiTamHop[chi],
-            hopHonNhan: chiLucHop[chi],
-            khacKhau: canXung[can],
-            daiKy: chiXung[chi]
-        };
+        return { canHop: canHop[can], chiTam: chiTamHop[chi], chiLuc: chiLucHop[chi], canXung: canXung[can], chiXung: chiXung[chi] };
     }
 
-    const app = document.getElementById('app');
-    for (let i = 0; i < 60; i++) {
-        let y = 1960 + i;
-        let c = cans[i % 10];
-        let h = chis[i % 12];
-        let name = c + " " + h;
-        let nAm = napAmFull[name] || "Đang cập nhật";
-        let cp = cungPhiData[i % 10];
-        let lg = getLogic(c, h);
+    function render(genderIdx) {
+        const app = document.getElementById('app');
+        app.innerHTML = "";
+        for (let i = 0; i < 60; i++) {
+            let y = 1960 + i;
+            let c = cans[i % 10], h = chis[i % 12], name = c + " " + h;
+            let nAm = napAmFull[name] || "Đang cập nhật";
+            let myCung = cungPhiData[i % 10][genderIdx];
+            let lg = getLogic(c, h);
+            
+            let cungHTML = "";
+            for (let tCung in batTrach[myCung]) {
+                let res = batTrach[myCung][tCung];
+                let isGood = ["Sinh Khí", "Diên Niên", "Thiên Y", "Phục Vị"].includes(res[0]);
+                cungHTML += `
+                    <div class="cung-item">
+                        + Phối cung <b>${tCung}</b>: <span class="${isGood?'txt-green':'txt-red'}">${res[0]}</span><br>
+                        <span style="color:#666; font-size:0.7rem;">Hệ quả: ${res[1]}</span>
+                    </div>`;
+            }
 
-        app.innerHTML += `
-            <div class="card">
-                <div class="header">
-                    <div>
-                        <span class="title">${y} - ${name}</span>
-                        <span class="nap-am">${nAm}</span>
-                    </div>
-                    <div class="cung-phi">
-                        <span style="color:var(--cyan)">Nam: ${cp[0]}</span><br>
-                        <span style="color:var(--pink)">Nữ: ${cp[1]}</span>
-                    </div>
-                </div>
-
-                <div class="logic-section">
-                    <div class="box b-good">
-                        <span class="label" style="color:var(--green)">💰 Hợp Tài Chính: Tuổi có Can ${lg.hopTaiChinh}</span>
-                        <span class="reason">Giải thích: Thiên Can là vận may, lộc trời. Can hợp giúp hanh thông về giấy tờ, ký kết, dòng tiền.</span>
-                    </div>
-
-                    <div class="box b-good">
-                        <span class="label" style="color:var(--cyan)">💼 Hợp Làm Ăn: Tuổi ${lg.hopLamAn}</span>
-                        <span class="reason">Giải thích: Tam hợp chủ về sự tương đồng trong hành động và phương pháp xử lý công việc.</span>
-                    </div>
-
-                    <div class="box b-good">
-                        <span class="label" style="color:var(--pink)">❤️ Hợp Hôn Nhân: Tuổi ${lg.hopHonNhan}</span>
-                        <span class="reason">Giải thích: Lục hợp là sự thấu hiểu nội tâm, giúp gia đạo yên ấm, ít sóng gió ngầm.</span>
+            app.innerHTML += `
+                <div class="card">
+                    <div class="header">
+                        <div>
+                            <span class="title">${y} - ${name}</span>
+                            <span class="nap-am">${nAm}</span>
+                        </div>
+                        <div class="cung-phi">
+                            <span style="color:${genderIdx==0?'var(--cyan)':'var(--pink)'}">Cung: ${myCung} (${genderIdx==0?'Nam':'Nữ'})</span>
+                        </div>
                     </div>
 
-                    <div class="box b-warn">
-                        <span class="label" style="color:var(--yellow)">⚠️ Khắc khẩu: Can ${lg.khacKhau}</span>
-                        <span class="reason">Tại sao: Thiên can đối xung khiến quan điểm trái ngược, nói chuyện dễ gây ức chế dù không ác ý.</span>
+                    <div class="gender-select">
+                        <button class="gender-btn ${genderIdx==0?'active-nam':''}" onclick="render(0)">XEM NAM</button>
+                        <button class="gender-btn ${genderIdx==1?'active-nu':''}" onclick="render(1)">XEM NỮ</button>
                     </div>
 
-                    <div class="box b-bad">
-                        <span class="label" style="color:var(--red)">💀 Đại kỵ: Tuổi ${lg.daiKy}</span>
-                        <span class="reason">Tại sao: Lục xung là thế đối đầu trực diện, dễ dẫn đến đổ vỡ trắng tay nếu chung vốn.</span>
-                    </div>
-                </div>
+                    <div class="logic-section">
+                        <div class="box b-info">
+                            <span class="label" style="color:var(--cyan)">⚔️ PHỐI CUNG PHI (Mệnh cung + Đối tác)</span>
+                            ${cungHTML}
+                        </div>
 
-                <textarea placeholder="Ghi chú đối tác, người thân..."></textarea>
-            </div>
-        `;
+                        <div class="box b-good">
+                            <span class="label" style="color:var(--green)">💰 Hợp Tài Chính: Tuổi có Can ${lg.canHop}</span>
+                            <span class="reason">Giải thích: Thiên Can là vận may, lộc trời. Can hợp giúp hanh thông về giấy tờ, ký kết, dòng tiền lưu thông tốt.</span>
+                        </div>
+
+                        <div class="box b-good">
+                            <span class="label" style="color:var(--cyan)">💼 Hợp Làm Ăn: Tuổi ${lg.chiTam}</span>
+                            <span class="reason">Giải thích: Tam hợp chủ về sự tương đồng trong hành động và phương pháp xử lý công việc.</span>
+                        </div>
+
+                        <div class="box b-good">
+                            <span class="label" style="color:var(--pink)">❤️ Hợp Hôn Nhân: Tuổi ${lg.chiLuc}</span>
+                            <span class="reason">Giải thích: Lục hợp là sự thấu hiểu nội tâm, giúp gia đạo yên ấm, ít sóng gió ngầm.</span>
+                        </div>
+
+                        <div class="box b-warn">
+                            <span class="label" style="color:var(--yellow)">⚠️ Khắc khẩu: Can ${lg.canXung}</span>
+                            <span class="reason">Tại sao: Thiên can đối xung khiến quan điểm trái ngược, nói chuyện dễ gây ức chế dù không ác ý.</span>
+                        </div>
+
+                        <div class="box b-bad">
+                            <span class="label" style="color:var(--red)">💀 Đại kỵ: Tuổi ${lg.chiXung}</span>
+                            <span class="reason">Tại sao: Lục xung là thế đối đầu trực diện, dễ dẫn đến đổ vỡ trắng tay nếu chung vốn.</span>
+                        </div>
+                    </div>
+                    <textarea placeholder="Ghi chú đối tác, người thân..."></textarea>
+                </div>`;
+        }
     }
+    render(0); // Mặc định hiện Nam
 </script>
 </body>
 </html>
