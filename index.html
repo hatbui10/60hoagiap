@@ -37,7 +37,6 @@
         .title { font-size: 1.4rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--cyan); }
         .nap-am { color: var(--cyan); font-weight: bold; font-size: 0.95rem; display: block; margin-top: 4px; }
         
-        /* Tab giới tính */
         .gender-select { display: flex; gap: 8px; margin: 10px 0; }
         .gender-btn { 
             flex: 1; padding: 10px; border-radius: 8px; border: 1px solid var(--border); 
@@ -58,7 +57,6 @@
         .reason { font-size: 0.75rem; color: #8b949e; font-style: italic; margin-top: 4px; display: block; }
 
         .cung-item { font-size: 0.75rem; border-bottom: 1px solid #222; padding: 6px 0; }
-        .cung-name { font-weight: bold; }
         .txt-green { color: var(--green); }
         .txt-red { color: var(--red); }
 
@@ -76,6 +74,7 @@
 <script>
     const cans = ["Giáp", "Ất", "Bính", "Đinh", "Mậu", "Kỷ", "Canh", "Tân", "Nhâm", "Quý"];
     const chis = ["Tý", "Sửu", "Dần", "Mão", "Thìn", "Tỵ", "Ngọ", "Mùi", "Thân", "Dậu", "Tuất", "Hợi"];
+    
     const napAmFull = {
         "Giáp Tý": "Hải Trung Kim", "Ất Sửu": "Hải Trung Kim", "Bính Dần": "Lư Trung Hỏa", "Đinh Mão": "Lư Trung Hỏa",
         "Mậu Thìn": "Đại Lâm Mộc", "Kỷ Tỵ": "Đại Lâm Mộc", "Canh Ngọ": "Lộ Bàng Thổ", "Tân Mùi": "Lộ Bàng Thổ",
@@ -94,10 +93,6 @@
         "Canh Thân": "Thạch Lựu Mộc", "Tân Dậu": "Thạch Lựu Mộc", "Nhâm Tuất": "Đại Hải Thủy", "Quý Hợi": "Đại Hải Thủy"
     };
 
-    const cungPhiData = [
-        ["Tốn", "Khôn"], ["Chấn", "Chấn"], ["Khôn", "Tốn"], ["Khảm", "Cấn"], ["Ly", "Càn"], ["Cấn", "Đoài"], ["Đoài", "Cấn"], ["Càn", "Ly"], ["Khôn", "Khảm"], ["Tốn", "Khôn"]
-    ];
-
     const batTrach = {
         "Tốn": { "Khảm": ["Sinh Khí", "Tài lộc cực thịnh, con cái thành đạt."], "Chấn": ["Diên Niên", "Gia đạo êm ấm, tình cảm bền vững."], "Ly": ["Thiên Y", "Sức khỏe dồi dào, quý nhân hỗ trợ."], "Tốn": ["Phục Vị", "May mắn, tinh thần bình an."], "Càn": ["Họa Hại", "Thị phi, mất tiền oan vặt."], "Khôn": ["Ngũ Quỷ", "Dễ mất trộm, hỏa hoạn, tai tiếng."], "Đoài": ["Lục Sát", "Kiện tụng, tình cảm nứt vỡ."], "Cấn": ["Tuyệt Mệnh", "Phá sản, bệnh nan y (Đại kỵ)."] },
         "Khôn": { "Cấn": ["Sinh Khí", "Phát triển sự nghiệp, con cái giỏi."], "Càn": ["Diên Niên", "Vợ chồng thấu hiểu, sống thọ."], "Đoài": ["Thiên Y", "Gặp thầy gặp thuốc, ít ốm đau."], "Khôn": ["Phục Vị", "Gia đình yên ổn, ít biến động."], "Khảm": ["Tuyệt Mệnh", "Phá sản, hại sức khỏe nghiêm trọng."], "Tốn": ["Ngũ Quỷ", "Bị tiểu nhân chọc phá, mất việc."], "Chấn": ["Họa Hại", "Nói năng gây hiểu lầm, xui xẻo."], "Ly": ["Lục Sát", "Mất ngủ, tâm lý bất an, cãi vã."] },
@@ -108,6 +103,28 @@
         "Càn": { "Đoài": ["Sinh Khí", "Mọi việc hanh thông, lộc lá nhiều."], "Khôn": ["Diên Niên", "Hòa thuận trong ngoài, phúc đức."], "Cấn": ["Thiên Y", "Sức khỏe dồi dào, gặp may mắn."], "Càn": ["Phục Vị", "Sự nghiệp ổn định, được trợ giúp."], "Ly": ["Tuyệt Mệnh", "Hại người hại của, tan vỡ gia đình."], "Chấn": ["Ngũ Quỷ", "Bất hạnh, mất trộm, tai họa."], "Khảm": ["Lục Sát", "Mang tiếng xấu, hay bị vu oan."], "Tốn": ["Họa Hại", "Thất bại trong công việc, mệt mỏi."] },
         "Đoài": { "Càn": ["Sinh Khí", "Tài lộc dồi dào, kinh doanh thuận lợi."], "Cấn": ["Diên Niên", "Gia đạo yên vui, bạn bè giúp đỡ."], "Khôn": ["Thiên Y", "Thân thể khỏe mạnh, ít ốm đau."], "Đoài": ["Phục Vị", "Củng cố ý chí, may mắn vây quanh."], "Chấn": ["Tuyệt Mệnh", "Tốn hao tài sản, tai nạn đau thương."], "Ly": ["Ngũ Quỷ", "Dễ bị lừa gạt, mất tiền của."], "Tốn": ["Lục Sát", "Quan hệ bất chính, thị phi lôi kéo."], "Khảm": ["Họa Hại", "Tâm trí rối loạn, khó thành công."] }
     };
+
+    function getCungPhi(year, genderIdx) {
+        let sum = 0;
+        let yStr = year.toString();
+        for (let char of yStr) sum += parseInt(char);
+        while (sum > 9) {
+            let temp = 0;
+            for (let char of sum.toString()) temp += parseInt(char);
+            sum = temp;
+        }
+        if (genderIdx === 0) { // Nam
+            let res = 11 - sum;
+            if (res > 9) res -= 9;
+            const namCung = [null, "Khảm", "Khôn", "Chấn", "Tốn", "Khôn", "Càn", "Đoài", "Cấn", "Ly"];
+            return namCung[res];
+        } else { // Nữ
+            let res = 4 + sum;
+            while (res > 9) res -= 9;
+            const nuCung = [null, "Khảm", "Khôn", "Chấn", "Tốn", "Cấn", "Càn", "Đoài", "Cấn", "Ly"];
+            return nuCung[res];
+        }
+    }
 
     function getLogic(can, chi) {
         const canHop = { "Giáp": "Kỷ", "Ất": "Canh", "Bính": "Tân", "Đinh": "Nhâm", "Mậu": "Quý", "Kỷ": "Giáp", "Canh": "Ất", "Tân": "Bính", "Nhâm": "Đinh", "Quý": "Mậu" };
@@ -123,9 +140,13 @@
         app.innerHTML = "";
         for (let i = 0; i < 60; i++) {
             let y = 1960 + i;
-            let c = cans[i % 10], h = chis[i % 12], name = c + " " + h;
+            // 1960 là Canh Tý. Canh có index 6 trong mảng cans, Tý có index 0 trong mảng chis.
+            let cIndex = (6 + i) % 10;
+            let hIndex = (0 + i) % 12;
+            
+            let c = cans[cIndex], h = chis[hIndex], name = c + " " + h;
             let nAm = napAmFull[name] || "Đang cập nhật";
-            let myCung = cungPhiData[i % 10][genderIdx];
+            let myCung = getCungPhi(y, genderIdx);
             let lg = getLogic(c, h);
             
             let cungHTML = "";
@@ -191,7 +212,7 @@
                 </div>`;
         }
     }
-    render(0); // Mặc định hiện Nam
+    render(0);
 </script>
 </body>
 </html>
